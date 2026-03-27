@@ -9,6 +9,7 @@ import org.mapstruct.ReportingPolicy;
 
 import com.wassim.blog.domain.Enums.PostStatus;
 import com.wassim.blog.domain.dto.CategoryDto;
+import com.wassim.blog.domain.dto.CreateCategoryRequest;
 import com.wassim.blog.domain.entities.Category;
 import com.wassim.blog.domain.entities.Post;
 
@@ -16,7 +17,9 @@ import com.wassim.blog.domain.entities.Post;
 public interface CategoryMapper {
 
     @Mapping(target = "postCount", source = "posts", qualifiedByName = "calculatePostCount")
-    CategoryDto toDto(Category category);
+    CategoryDto toDTO(Category category);
+
+    Category toEntity(CreateCategoryRequest request);
 
     @Named("calculatePostCount")
     default long calculatePostCount(List<Post> posts) {

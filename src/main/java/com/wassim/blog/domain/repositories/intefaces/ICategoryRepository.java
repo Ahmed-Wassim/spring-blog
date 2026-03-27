@@ -12,6 +12,10 @@ import com.wassim.blog.domain.entities.Category;
 @Repository
 public interface ICategoryRepository extends JpaRepository<Category, UUID> {
 
-    @Query("SELECT c FROM Category c LEFT JOIN FETCH c.posts p GROUP BY c")
+    @Query("SELECT DISTINCT c FROM Category c LEFT JOIN FETCH c.posts")
     List<Category> findAllWithPostCount();
+
+    boolean existsByName(String name);
+
+    boolean existsById(UUID id);
 }

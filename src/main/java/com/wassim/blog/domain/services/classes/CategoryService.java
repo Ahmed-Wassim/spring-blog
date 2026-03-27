@@ -8,6 +8,7 @@ import com.wassim.blog.domain.entities.Category;
 import com.wassim.blog.domain.repositories.intefaces.ICategoryRepository;
 import com.wassim.blog.domain.services.intefaces.ICategoryService;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -19,5 +20,23 @@ public class CategoryService implements ICategoryService {
     @Override
     public List<Category> getAllCategories() {
         return categoryRepository.findAllWithPostCount();
+    }
+
+    @Override
+    @Transactional
+    public Category createCategory(Category category) {
+        if (categoryRepository.existsByName(category.getName())) {
+            throw new IllegalArgumentException("Category with name '" + category.getName() + "' already exists.");
+        }
+        return categoryRepository.save(category);
+    }
+
+    @Override
+    @Transactional
+    public void deleteCategory(java.util.UUID id) {
+        if (!categoryRepository.existsById(id)) {
+            throw new IllegalArgumentException("Category with id '" + id + "' does not exist.");
+        }
+        categoryRepository.deleteById(id);
     }
 }
