@@ -1,6 +1,7 @@
 package com.wassim.blog.domain.services.classes;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -33,10 +34,17 @@ public class CategoryService implements ICategoryService {
 
     @Override
     @Transactional
-    public void deleteCategory(java.util.UUID id) {
+    public void deleteCategory(UUID id) {
         if (!categoryRepository.existsById(id)) {
             throw new IllegalArgumentException("Category with id '" + id + "' does not exist.");
         }
         categoryRepository.deleteById(id);
     }
+
+    public Category getCategoryById(UUID id) {
+        categoryRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Category with id '" + id + "' does not exist."));
+        return categoryRepository.findById(id).get();
+    }
+
 }
